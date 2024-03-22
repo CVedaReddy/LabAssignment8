@@ -1,56 +1,59 @@
 #include<stdio.h>
-#include<string.h>
-void multiply(int m,int  n,int p,int q,int mat[m][n],int mat1[p][q]);
+void multiply(int m,int n,int (*arr1)[n],int p,int q,int (*arr2)[q],int (*result)[q])
+{
+   int mult[m][q];
+   for (int i = 0; i < m; i++) 
+   {
+        for (int j = 0; j < q; j++) 
+        {
+            result[i][j] = 0;
+            for (int k = 0; k < p; k++) 
+            {
+               *(*(result+i)+j) += *(*(arr1+i)+k) * *(*(arr2+k)+j);
+            }
+        }
+    }
+}
 int main()
 {
-    int m,n,p,q;
-    printf("Enter the dimensions of the first matrix (rows columns): ");
-    scanf("%d %d",&m,&n);
-    int mat[m][n];
-    printf("Enter the elements of the first matrix:\n");
-    for(int i=0;i<m;i++)
-    {
-        for(int j=0;j<n;j++)
-        {
-            scanf("%d",&mat[i][j]);
-        }
-    }
-    printf("\n");
-    printf("Enter the dimensions of the second matrix (rows columns): ");
-    scanf("%d %d",&p,&q);
-    int mat1[p][q];
-    printf("Enter the elements of the second matrix:\n");
-    for(int i=0;i<p;i++)
-    {
-        for(int j=0;j<q;j++)
-        {
-            scanf("%d",&mat1[i][j]);
-        }
-    }
-    multiply(m,n,p,q,mat,mat1);
-    return 0;
-}
-void multiply(int m,int  n,int p,int q,int mat[m][n],int mat1[p][q])
-{
-    if(n==p)
-    {
-        printf("Resultant matrix after multiplication:\n");
-        for(int i=0;i<m;i++)
-        {
-            for(int j=0;j<q;j++)
-            {
-                int sum=0;
-                for(int k=0;k<n;k++)
-                {
-                    sum=sum+(mat[i][k]*mat1[k][j]);
-                }
-                printf("%d ",sum);
-            }
-            printf("\n");
-        }
-    }
-    else
-    {
-        printf("matrix multiplication can not be performed between two given matrices");
-    }
+   int row1,col1;
+   printf("enter the dimension of the first matrix:");
+   scanf("%d%d",&row1,&col1);
+   int arr1[row1][col1];
+   printf("enter the elements of first matrix:\n");
+   for(int i=0;i<row1;i++)
+   {
+      for(int j=0;j<col1;j++)
+      {
+         scanf("%d",&arr1[i][j]);
+      }
+   }
+   int row2,col2;
+   printf("enter the dimension of the second matrix:");
+   scanf("%d%d",&row2,&col2);
+   int arr2[row2][col2],prod[row1][col2];
+   printf("enter the elements of second matrix:\n");
+   for(int i=0;i<row2;i++)
+   {
+      for(int j=0;j<col2;j++)
+      {
+         scanf("%d",&arr2[i][j]);
+      }
+   }
+   if (col1!=row2) 
+   {
+      printf("Matrix multiplication is not possible for given dimension.");
+   }
+   else
+   {
+   multiply(row1,col1,arr1,row2,col2,arr2,prod);
+   for(int i=0;i<row1;i++)
+   {
+      for(int j=0;j<col2;j++)
+      {
+         printf("%d\t",prod[i][j]);
+      }
+      printf("\n");
+   }
+   }
 }
